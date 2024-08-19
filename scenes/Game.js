@@ -11,37 +11,27 @@ export default class Game extends Phaser.Scene {
   preload() { }
 
   create() {
-    //reconocimiento del mouse
-    this.pointer = this.input.activePointer;
-    // crear pala como rectangulo
+
+    //crear paleta
     this.paddle = this.add.rectangle(400, 500, 100, 20, 0x6666ff);
-
-    // crear bola como circulo
-    this.ball = this.add.circle(400, 300, 10, 0xff6666);
-
-    //crear obstaculo
-    this.obstacle = this.add.rectangle(400, 200, 100, 100, 0x66ff66);
-
-    //agregarlos a las fisicas
     this.physics.add.existing(this.paddle);
-    this.physics.add.existing(this.ball);
-    this.physics.add.existing(this.obstacle);
-
-    //hacer la paleta inamovible
     this.paddle.body.setImmovable(true);
-
-    //agregar configuraciones de fisicas a la paleta
     this.paddle.body.setCollideWorldBounds(true);
 
-    //agregar configuracion de fisicas a la pelota
+    //crear pelota
+    this.ball = this.add.circle(400, 300, 10, 0xff6666);
+    this.physics.add.existing(this.ball);
     this.ball.body.setCollideWorldBounds(true);
     this.ball.body.setBounce(1, 1);
     this.ball.body.setVelocity(200, 200);
 
-    //agregar configuracion de fisicas al obstaculo
+    //crear obstaculo
+    this.obstacle = this.add.rectangle(400, 200, 100, 100, 0x66ff66);
+    this.physics.add.existing(this.obstacle);
     this.obstacle.body.setImmovable(true);
 
-    //agregar cursor
+    //reconocimiento del mouse
+    this.pointer = this.input.activePointer;
     this.cursor = this.input.keyboard.createCursorKeys();
 
     //colision de la pelota con la paleta
@@ -60,7 +50,6 @@ export default class Game extends Phaser.Scene {
     //colision de la pelota con el limite inferior
     this.physics.world.on("worldbounds", (body, up, down, left, right) => {
       if (down) {
-        console.log("hit bottom");
         this.scene.start("game");
       }
     });
@@ -76,7 +65,6 @@ export default class Game extends Phaser.Scene {
   }
 
   handleCollision = (obstacle, ball) => {
-    console.log("collision");
     obstacle.destroy();
   };
 }
